@@ -1,0 +1,354 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@500;600;700;800&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #DC2626;
+  --color-primary-dark: #991b1b;
+  --color-dark: #0a0f1a;
+  --color-dark-2: #111827;
+  --color-steel: #1e2937;
+  --color-background: #F1F5F9;
+  --color-accent: #F59E0B;
+
+  --font-sans: 'Inter', sans-serif;
+  --font-poppins: 'Poppins', sans-serif;
+  --font-barlow: 'Barlow Condensed', sans-serif;
+}
+
+html, body {
+  font-family: 'Inter', sans-serif;
+  background-color: #F1F5F9;
+  color: #0a0f1a;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* ============================================
+   SCROLLBAR
+============================================ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0a0f1a; }
+::-webkit-scrollbar-thumb { background: #DC2626; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #F59E0B; }
+
+/* ============================================
+   GLASSMORPHISM
+============================================ */
+.glass {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.glass-light {
+  background: rgba(255,255,255,0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.4);
+}
+.glass-dark {
+  background: rgba(10,15,26,0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+/* ============================================
+   GRADIENT TEXT
+============================================ */
+.text-gradient-white {
+  background: linear-gradient(135deg, #FFFFFF 0%, #D1D5DB 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.text-gradient-red {
+  background: linear-gradient(135deg, #DC2626 0%, #ef4444 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+/* Fire gradient — only use for accent words, not full sentences */
+.text-gradient-fire {
+  background: linear-gradient(135deg, #DC2626 0%, #DC2626 60%, #ef4444 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================
+   CARD STYLES
+============================================ */
+.card-premium {
+  background: #ffffff;
+  border: 1px solid rgba(0,0,0,0.06);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.04);
+  border-radius: 1.5rem;
+  transition: all 0.3s ease;
+}
+.card-premium:hover {
+  box-shadow: 0 4px 6px rgba(0,0,0,0.05), 0 16px 40px rgba(0,0,0,0.08);
+  transform: translateY(-4px);
+}
+
+.card-dark {
+  background: linear-gradient(135deg, #1e2937 0%, #111827 100%);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 1.5rem;
+}
+
+/* ============================================
+   BACKGROUND TEXTURES
+============================================ */
+.bg-carbon {
+  background-color: #0a0f1a;
+  background-image:
+    radial-gradient(circle at 25% 25%, rgba(220,38,38,0.04) 0%, transparent 50%),
+    radial-gradient(circle at 75% 75%, rgba(245,158,11,0.03) 0%, transparent 50%);
+}
+
+.bg-grid {
+  background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.bg-hero-pattern {
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% -20%, rgba(220,38,38,0.15) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 50%, rgba(245,158,11,0.06) 0%, transparent 50%);
+}
+
+/* ============================================
+   DIVIDERS
+============================================ */
+.divider-fire {
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #DC2626, #F59E0B, transparent);
+  border: none;
+}
+
+/* ============================================
+   BUTTONS
+============================================ */
+.btn-primary {
+  background: linear-gradient(135deg, #DC2626 0%, #b91c1c 100%);
+  color: white;
+  padding: 0.875rem 2rem;
+  border-radius: 0.75rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(220,38,38,0.4), 0 1px 3px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  border: none;
+  cursor: pointer;
+}
+.btn-primary:hover {
+  background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+  box-shadow: 0 8px 25px rgba(220,38,38,0.5), 0 2px 6px rgba(0,0,0,0.2);
+  transform: translateY(-2px);
+}
+
+.btn-whatsapp {
+  background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+  color: white;
+  padding: 0.875rem 2rem;
+  border-radius: 0.75rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 15px rgba(22,163,74,0.35), 0 1px 3px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.btn-whatsapp:hover {
+  background: linear-gradient(135deg, #15803d 0%, #166534 100%);
+  box-shadow: 0 8px 25px rgba(22,163,74,0.45);
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: white;
+  padding: 0.875rem 2rem;
+  border-radius: 0.75rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1.5px solid rgba(255,255,255,0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.btn-outline:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(255,255,255,0.4);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   SECTION LABELS
+============================================ */
+.section-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #DC2626;
+}
+
+/* ============================================
+   ANIMATIONS
+============================================ */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 12px rgba(220,38,38,0.4); }
+  50%       { box-shadow: 0 0 28px rgba(220,38,38,0.75); }
+}
+.animate-pulse-glow { animation: pulse-glow 2.5s ease-in-out infinite; }
+
+@keyframes phone-ring {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  10%, 30%  { transform: rotate(-12deg) scale(1.1); }
+  20%, 40%  { transform: rotate(12deg) scale(1.1); }
+  50%       { transform: rotate(-6deg) scale(1); }
+  60%       { transform: rotate(6deg) scale(1); }
+}
+.animate-phone-ring { animation: phone-ring 3s ease-in-out infinite; }
+
+@keyframes float-y {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-10px); }
+}
+.animate-float { animation: float-y 4s ease-in-out infinite; }
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+.animate-spin-slow { animation: spin-slow 20s linear infinite; }
+
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+.animate-slide-in { animation: slide-in-left 0.6s ease-out forwards; }
+
+@keyframes count-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.animate-count-up { animation: count-up 0.8s ease-out forwards; }
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.08) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s linear infinite;
+}
+
+/* ============================================
+   EMERGENCY PULSE BADGE
+============================================ */
+.emergency-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.emergency-badge::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 9999px;
+  background: rgba(220,38,38,0.3);
+  animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+/* ============================================
+   DIAGONAL DIVIDER
+============================================ */
+.diagonal-bottom {
+  clip-path: polygon(0 0, 100% 0, 100% 88%, 0 100%);
+}
+.diagonal-top {
+  clip-path: polygon(0 12%, 100% 0, 100% 100%, 0 100%);
+}
+
+/* ============================================
+   CTA CARD GLOW
+============================================ */
+.cta-card-red {
+  background: linear-gradient(135deg, #DC2626 0%, #9f1239 100%);
+  box-shadow: 0 8px 32px rgba(220,38,38,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: all 0.3s ease;
+}
+.cta-card-red:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(220,38,38,0.45), inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+.cta-card-green {
+  background: linear-gradient(135deg, #16a34a 0%, #14532d 100%);
+  box-shadow: 0 8px 32px rgba(22,163,74,0.35), inset 0 1px 0 rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: all 0.3s ease;
+}
+.cta-card-green:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(22,163,74,0.45), inset 0 1px 0 rgba(255,255,255,0.12);
+}
+
+/* ============================================
+   SERVICE CARD
+============================================ */
+.service-card {
+  background: linear-gradient(145deg, #1e2937, #111827);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 1.25rem;
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #DC2626, #F59E0B);
+  transform: scaleX(0);
+  transition: transform 0.35s ease;
+}
+.service-card:hover { border-color: rgba(220,38,38,0.3); transform: translateY(-6px); }
+.service-card:hover::before { transform: scaleX(1); }
+
+/* ============================================
+   FLOATING PHONE BUTTON
+============================================ */
+.floating-btn {
+  position: fixed;
+  z-index: 100;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.4), 0 0 0 0 rgba(220,38,38,0.5);
+  animation: floating-pulse 2s ease-in-out infinite;
+}
+@keyframes floating-pulse {
+  0%   { box-shadow: 0 6px 24px rgba(0,0,0,0.4), 0 0 0 0 rgba(220,38,38,0.5); }
+  70%  { box-shadow: 0 6px 24px rgba(0,0,0,0.4), 0 0 0 14px rgba(220,38,38,0); }
+  100% { box-shadow: 0 6px 24px rgba(0,0,0,0.4), 0 0 0 0 rgba(220,38,38,0); }
+}
