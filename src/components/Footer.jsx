@@ -128,7 +128,7 @@ export default function Footer() {
               Our Services
             </h3>
             <ul className="space-y-3 text-sm text-gray-400">
-              {['Towing Services', 'Roadside Assistance', 'Accident Recovery', 'Light On-site Mechanics', 'Junk Car Removal'].map((s) => (
+              {['Towing Services', 'Roadside Assistance', 'Accident Recovery', 'Light On-site Mechanics'].map((s) => (
                 <li key={s} className="flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0" />
                   <Link to="/services" className="hover:text-white transition-colors">{s}</Link>

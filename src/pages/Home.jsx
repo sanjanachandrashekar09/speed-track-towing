@@ -42,7 +42,7 @@ export default function Home() {
     { title: "Roadside Assistance", icon: <Wrench className="w-6 h-6" />, desc: "24 Hour and Holiday assistance throughout the greater metropolitan area", color: "from-orange-600/20 to-orange-900/10" },
     { title: "Accident Recovery", icon: <AlertTriangle className="w-6 h-6" />, desc: "24 Hour and Holiday Accident Recovery", color: "from-yellow-600/20 to-yellow-900/10" },
     { title: "Light On-site Mechanics", icon: <Zap className="w-6 h-6" />, desc: "24 Hour and Holiday light mechanical work at site", color: "from-blue-600/20 to-blue-900/10" },
-    { title: "Junk Car Removal", icon: <Lock className="w-6 h-6" />, desc: "24 Hour and Holiday junk car removal and purchase", color: "from-purple-600/20 to-purple-900/10" },
+
   ];
 
   const trustPoints = [

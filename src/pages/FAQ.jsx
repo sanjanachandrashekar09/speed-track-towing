@@ -14,7 +14,7 @@ const faqs = [
   },
   {
     q: "What types of vehicles can you tow?",
-    a: "Our versatile fleet includes flatbeds and wheel-lift trucks, allowing us to safely transport motorcycles, sedans, SUVs, light commercial vehicles, and even junk cars without causing any damage."
+    a: "Our versatile fleet includes flatbeds and wheel-lift trucks, allowing us to safely transport motorcycles, sedans, SUVs, and light commercial vehicles without causing any damage."
   },
   {
     q: "How much do your towing services cost?",
@@ -24,10 +24,7 @@ const faqs = [
     q: "I've had an accident. Can you recover my vehicle?",
     a: "Absolutely. We specialize in accident recovery. We will safely retrieve your vehicle and can transport it to a secure storage facility, a repair shop, or any destination of your choice."
   },
-  {
-    q: "Do you buy junk cars?",
-    a: "Yes, we offer junk car removal and can pay cash for junk vehicles depending on their condition. Contact us with details for a quote."
-  }
+
 ];
 
 export default function FAQ() {

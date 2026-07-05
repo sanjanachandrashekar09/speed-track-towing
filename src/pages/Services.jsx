@@ -17,7 +17,13 @@ export default function Services() {
       accentColor: "#DC2626",
       items: [
         { name: "Emergency Towing" },
-        { name: "Car Lockout" },
+        { name: "Car towing" },
+        { name: "Motorcycle towing" },
+        { name: "Special vehicle towing" },
+        { name: "Flatbed towing" },
+        { name: "Local haulage" },
+        { name: "Long distance haulage" },
+        { name: "24/7 Towing Service" }
       ]
     },
     {
@@ -27,8 +33,13 @@ export default function Services() {
       description: "24 Hour and Holiday assistance throughout the greater metropolitan area",
       accentColor: "#F59E0B",
       items: [
-        { name: "Car Battery Change" },
-        { name: "Refueling" },
+        { name: "Car lockouts" },
+        { name: "Tyre change" },
+        { name: "Fuel delivery" },
+        { name: "Car battery service 24hrs" },
+        { name: "Battery service" },
+        { name: "24/7 Roadside Assistance" },
+        { name: "24/7 Emergency Assistance" }
       ]
     },
     {
@@ -38,8 +49,9 @@ export default function Services() {
       description: "24 Hour and Holiday Accident Recovery",
       accentColor: "#EF4444",
       items: [
-        { name: "Tow" },
+        { name: "Accident car towing" },
         { name: "Accident Vehicle Storage" },
+        { name: "Car Breakdown" }
       ]
     },
     {
@@ -49,28 +61,19 @@ export default function Services() {
       description: "24 Hour and Holiday light mechanical work at site",
       accentColor: "#3B82F6",
       items: [
+        { name: "Car repair and service" },
+        { name: "Minor Repairs" },
         { name: "Body Work" },
-        { name: "Mechanical" },
+        { name: "Mechanical" }
       ]
-    },
-    {
-      title: "Junk Car Removal",
-      icon: <Lock className="w-8 h-8" />,
-      image: "/junk_car.png",
-      description: "24 Hour and Holiday junk car removal and purchase",
-      accentColor: "#8B5CF6",
-      items: [
-        { name: "Junk Car Removal" },
-        { name: "Cash for Junk Cars" },
-      ]
-    }
+
   ];
 
   return (
     <>
       <SEO
         title="Our Services"
-        description="Comprehensive 24/7 towing, roadside assistance, accident recovery, on-site mechanics, and junk car removal services in Shivamogga."
+        description="Comprehensive 24/7 towing, roadside assistance, accident recovery, and on-site mechanics services in Shivamogga."
       />
 
       {/* ── Hero ── */}
