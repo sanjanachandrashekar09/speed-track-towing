@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { Star, CheckCircle, ExternalLink, PenTool, Clock, Shield, Award, Phone, MessageSquare } from 'lucide-react';
 import SEO from '../components/SEO';
+import ReviewForm from '../components/ReviewForm';
 
 const PHONE = '+917899916161';
 const WA_BASE = `https://wa.me/${PHONE}`;
@@ -172,6 +173,8 @@ export default function Testimonials() {
               </div>
             </div>
           </motion.div>
+
+          <ReviewForm />
 
           {/* Emergency CTA */}
           <motion.div
