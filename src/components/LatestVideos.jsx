@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Youtube, ExternalLink } from 'lucide-react';
+import { Play, ExternalLink } from 'lucide-react';
 
 export default function LatestVideos() {
   return (
@@ -21,7 +21,7 @@ export default function LatestVideos() {
 
           <div className="relative z-10 flex flex-col items-center">
             <div className="w-20 h-20 bg-primary/10 border border-primary/20 rounded-full flex items-center justify-center mb-8 shadow-inner shadow-primary/20 group-hover:scale-110 transition-transform duration-500">
-              <Youtube className="w-10 h-10 text-primary" />
+              <Play className="w-10 h-10 text-primary" />
             </div>
             
             <h2 className="font-barlow font-extrabold text-4xl sm:text-5xl uppercase tracking-tight mb-4">
@@ -38,7 +38,7 @@ export default function LatestVideos() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 font-poppins font-bold text-white text-base bg-primary px-8 py-4 rounded-xl hover:bg-primary-hover shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-all duration-300 transform hover:-translate-y-1"
             >
-              <Youtube className="w-5 h-5" />
+              <Play className="w-5 h-5" />
               <span>Visit Our YouTube Channel</span>
               <ExternalLink className="w-4 h-4 ml-1 opacity-70" />
             </a>
