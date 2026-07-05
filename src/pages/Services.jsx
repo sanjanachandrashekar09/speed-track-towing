@@ -51,7 +51,6 @@ export default function Services() {
       accentColor: "#EF4444",
       items: [
         { name: "Accident car towing" },
-        { name: "Accident Vehicle Storage" },
         { name: "Car Breakdown" }
       ]
     },
