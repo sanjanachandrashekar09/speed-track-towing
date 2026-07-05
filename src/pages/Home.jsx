@@ -7,6 +7,7 @@ import {
   Shield, Star, CheckCircle, ChevronRight
 } from 'lucide-react';
 import SEO from '../components/SEO';
+import LatestVideos from '../components/LatestVideos';
 
 const PHONE = '+917899916161';
 const PHONE_DISPLAY = '+91 78999 16161';
@@ -312,6 +313,9 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ── Latest Videos ── */}
+      <LatestVideos />
 
       {/* ═══════════════════════════════════════════
           EMERGENCY CTA BAND
