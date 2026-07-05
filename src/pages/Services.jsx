@@ -66,7 +66,7 @@ export default function Services() {
         { name: "Body Work" },
         { name: "Mechanical" }
       ]
-
+    }
   ];
 
   return (
