@@ -36,6 +36,7 @@ export default function Services() {
         { name: "Car lockouts" },
         { name: "Tyre change" },
         { name: "Fuel delivery" },
+        { name: "Jump Start Service" },
         { name: "Car battery service 24hrs" },
         { name: "Battery service" },
         { name: "24/7 Roadside Assistance" },
