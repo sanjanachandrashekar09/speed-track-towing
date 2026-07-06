@@ -11,6 +11,8 @@ import LatestVideos from '../components/LatestVideos';
 
 const PHONE = '+917899916161';
 const PHONE_DISPLAY = '+91 78999 16161';
+const ALT_PHONE = '+919880166968';
+const ALT_PHONE_DISPLAY = '+91 98801 66968';
 const WA_BASE = `https://wa.me/${PHONE}`;
 
 export default function Home() {
@@ -417,6 +419,7 @@ export default function Home() {
               <div>
                 <p className="text-white/60 text-xs font-barlow font-bold tracking-widest uppercase mb-2">Tap to Call Now</p>
                 <p className="font-barlow font-extrabold text-4xl tracking-tight">{PHONE_DISPLAY}</p>
+                <p className="font-barlow font-extrabold text-2xl tracking-tight text-white/80 mt-1">{ALT_PHONE_DISPLAY}</p>
                 <p className="text-white/60 text-sm font-light mt-2">24 hours · 7 days a week</p>
               </div>
             </a>
@@ -482,7 +485,7 @@ export default function Home() {
           {/* Business Info strip */}
           <div className="card-dark p-7 grid grid-cols-1 sm:grid-cols-3 gap-6 text-sm">
             {[
-              { icon: <Phone className="w-5 h-5 text-primary" />, label: "Emergency Call", value: PHONE_DISPLAY, href: `tel:${PHONE}` },
+              { icon: <Phone className="w-5 h-5 text-primary" />, label: "Emergency Call", value: `${PHONE_DISPLAY} / ${ALT_PHONE_DISPLAY}`, href: `tel:${PHONE}` },
               { icon: <MapPin className="w-5 h-5 text-primary" />, label: "Address", value: "Mallari Complex, Sagar Road, Sharavathi Nagar, Hosamane, Shivamogga — 577201" },
               { icon: <Clock className="w-5 h-5 text-primary" />, label: "Working Hours", value: "Open 24 Hours · 7 Days" },
             ].map((item, i) => (

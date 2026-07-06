@@ -4,6 +4,7 @@ import SEO from '../components/SEO';
 import ReviewForm from '../components/ReviewForm';
 
 const PHONE = '+917899916161';
+const ALT_PHONE_DISPLAY = '+91 98801 66968';
 const WA_BASE = `https://wa.me/${PHONE}`;
 const GOOGLE_MAPS = 'https://www.google.com/maps/place/Mallari+Complex,+Sagar+Rd,+Sharavathi+Nagar,+Hosamane,+Shivamogga,+Karnataka+577201';
 
@@ -196,10 +197,13 @@ export default function Testimonials() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
                   href={`tel:${PHONE}`}
-                  className="flex items-center justify-center gap-3 bg-primary hover:bg-primary-dark text-white font-poppins font-extrabold text-base px-8 py-4 rounded-2xl shadow-xl animate-pulse-glow transition-all"
+                  className="flex flex-col items-center justify-center gap-1 bg-primary hover:bg-primary-dark text-white font-poppins font-extrabold text-base px-8 py-4 rounded-2xl shadow-xl animate-pulse-glow transition-all"
                 >
-                  <Phone className="h-5 w-5 animate-phone-ring" />
-                  <span>+91 78999 16161</span>
+                  <div className="flex items-center gap-3">
+                    <Phone className="h-5 w-5 animate-phone-ring" />
+                    <span>+91 78999 16161</span>
+                  </div>
+                  <span className="text-sm font-semibold opacity-90">{ALT_PHONE_DISPLAY}</span>
                 </a>
                 <a
                   href={`${WA_BASE}?text=Hello%20Speed%20Track%2C%20I%20need%20emergency%20towing%20assistance.`}

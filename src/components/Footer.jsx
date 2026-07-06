@@ -1,8 +1,32 @@
 import { Link } from 'react-router-dom';
-import { Truck, Phone, MessageSquare, MapPin, Clock, ArrowRight } from 'lucide-react';
+import { Phone, MessageSquare, MapPin, Clock, ArrowRight } from 'lucide-react';
+
+const TowTruckLogo = ({ className }) => (
+  <svg viewBox="0 0 130 60" fill="currentColor" className={className}>
+    <path d="M 65 50 H 125 A 3 3 0 0 0 128 47 V 33 C 128 31 125 31 125 31 H 115 V 18 A 3 3 0 0 0 112 15 H 95 A 3 3 0 0 0 92 18 V 33 H 65 Z" />
+    <path d="M 96 19 H 110 V 30 H 96 Z" fill="white" />
+    <path d="M 85 33 L 55 5 H 50 V 10 L 78 33 Z" />
+    <rect x="48" y="5" width="4" height="35" />
+    <circle cx="102" cy="50" r="8" fill="white" />
+    <circle cx="102" cy="50" r="4" fill="currentColor" />
+    
+    <g transform="translate(0, 20) rotate(-18 25 30)">
+      <path d="M 5 30 C 5 20 15 15 25 15 H 40 C 45 15 50 20 50 25 V 35 H 5 Z" />
+      <path d="M 22 18 H 35 C 38 18 42 22 42 25 H 18 Z" fill="white" />
+      <path d="M 42 12 V 16 M 48 13 V 17 M 40 12 H 50" stroke="currentColor" strokeWidth="2" fill="none" />
+      <circle cx="15" cy="35" r="6" fill="white" />
+      <circle cx="15" cy="35" r="3" fill="currentColor" />
+      <circle cx="40" cy="35" r="6" fill="white" />
+      <circle cx="40" cy="35" r="3" fill="currentColor" />
+    </g>
+  </svg>
+);
+
+
 
 const PHONE = '+917899916161';
 const PHONE_DISPLAY = '+91 78999 16161';
+const ALT_PHONE_DISPLAY = '+91 98801 66968';
 const WA_BASE = `https://wa.me/${PHONE}`;
 
 export default function Footer() {
@@ -29,10 +53,13 @@ export default function Footer() {
             <div className="flex gap-3">
               <a
                 href={`tel:${PHONE}`}
-                className="flex items-center gap-2.5 bg-primary hover:bg-primary-dark text-white px-6 py-3.5 rounded-xl font-poppins font-bold text-sm tracking-wide shadow-lg animate-pulse-glow transition-all"
+                className="flex flex-col items-center justify-center gap-1 bg-primary hover:bg-primary-dark text-white px-6 py-2.5 rounded-xl font-poppins font-bold text-sm tracking-wide shadow-lg animate-pulse-glow transition-all"
               >
-                <Phone className="h-4 w-4 animate-phone-ring" />
-                <span>{PHONE_DISPLAY}</span>
+                <div className="flex items-center gap-2.5">
+                  <Phone className="h-4 w-4 animate-phone-ring" />
+                  <span>{PHONE_DISPLAY}</span>
+                </div>
+                <span className="text-[11px] opacity-80 font-semibold tracking-wider">{ALT_PHONE_DISPLAY}</span>
               </a>
               <a
                 href={`${WA_BASE}?text=Hello%20Speed%20Track%2C%20I%20need%20towing%20assistance.`}
@@ -55,8 +82,8 @@ export default function Footer() {
           {/* Brand */}
           <div className="space-y-5 lg:col-span-1">
             <Link to="/" className="flex items-center gap-3 group">
-              <div className="bg-primary p-2.5 rounded-xl text-white shadow-lg animate-pulse-glow group-hover:scale-110 transition-transform duration-300">
-                <Truck className="h-6 w-6" />
+              <div className="bg-white p-2 rounded-xl shadow-lg group-hover:scale-105 transition-transform duration-300 flex items-center justify-center">
+                <TowTruckLogo className="h-8 w-16 text-primary" />
               </div>
               <div className="leading-tight">
                 <span className="font-barlow font-extrabold text-xl tracking-wider text-white block uppercase">Speed Track</span>
@@ -152,7 +179,8 @@ export default function Footer() {
                 </div>
                 <div>
                   <span className="block font-poppins font-semibold text-white">Emergency Line</span>
-                  <span className="text-gray-400 group-hover:text-primary transition-colors font-light">{PHONE_DISPLAY}</span>
+                  <span className="text-gray-400 group-hover:text-primary transition-colors font-light block">{PHONE_DISPLAY}</span>
+                  <span className="text-gray-400 group-hover:text-primary transition-colors font-light block">{ALT_PHONE_DISPLAY}</span>
                 </div>
               </a>
               <a

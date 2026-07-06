@@ -133,10 +133,13 @@ export default function FAQ() {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
                   href="tel:+917899916161"
-                  className="flex items-center justify-center gap-3 bg-primary hover:bg-primary-dark text-white font-poppins font-extrabold text-base px-8 py-4 rounded-xl shadow-xl animate-pulse-glow transition-all"
+                  className="flex flex-col items-center justify-center gap-1 bg-primary hover:bg-primary-dark text-white font-poppins font-extrabold text-base px-8 py-3 rounded-xl shadow-xl animate-pulse-glow transition-all"
                 >
-                  <Phone className="h-5 w-5 animate-phone-ring" />
-                  <span>Call Now</span>
+                  <div className="flex items-center gap-3">
+                    <Phone className="h-5 w-5 animate-phone-ring" />
+                    <span>Call Now</span>
+                  </div>
+                  <span className="text-[11px] font-semibold opacity-90 tracking-wider">+91 98801 66968</span>
                 </a>
                 <a
                   href="https://wa.me/917899916161?text=Hello%2C%20I%20have%20a%20question%20about%20your%20services."

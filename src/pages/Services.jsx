@@ -6,6 +6,7 @@ import {
 import SEO from '../components/SEO';
 
 const PHONE = '+917899916161';
+const ALT_PHONE_DISPLAY = '+91 98801 66968';
 
 export default function Services() {
   const servicesList = [
@@ -203,10 +204,13 @@ export default function Services() {
               </div>
               <a
                 href={`tel:${PHONE}`}
-                className="flex items-center gap-3 bg-white text-primary font-poppins font-extrabold text-lg px-8 py-5 rounded-2xl shadow-2xl hover:bg-accent hover:text-dark transition-all duration-300 animate-pulse-glow whitespace-nowrap"
+                className="flex flex-col items-center justify-center gap-1 bg-white text-primary font-poppins font-extrabold text-lg px-8 py-4 rounded-2xl shadow-2xl hover:bg-accent hover:text-dark transition-all duration-300 animate-pulse-glow whitespace-nowrap"
               >
-                <Phone className="h-6 w-6 animate-phone-ring" />
-                <span>+91 78999 16161</span>
+                <div className="flex items-center gap-3">
+                  <Phone className="h-6 w-6 animate-phone-ring" />
+                  <span>+91 78999 16161</span>
+                </div>
+                <span className="text-sm font-semibold opacity-90 text-dark/70">{ALT_PHONE_DISPLAY}</span>
               </a>
             </div>
           </motion.div>

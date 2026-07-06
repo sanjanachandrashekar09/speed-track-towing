@@ -8,6 +8,7 @@ import SEO from '../components/SEO';
 
 const PHONE = '+917899916161';
 const PHONE_DISPLAY = '+91 78999 16161';
+const ALT_PHONE_DISPLAY = '+91 98801 66968';
 const WA_BASE = `https://wa.me/${PHONE}`;
 
 export default function Contact() {
@@ -88,6 +89,7 @@ export default function Contact() {
               <div>
                 <p className="text-white/60 text-xs font-barlow font-bold tracking-widest uppercase mb-3">Tap to Call Now</p>
                 <p className="font-barlow font-extrabold text-4xl sm:text-5xl tracking-tight">{PHONE_DISPLAY}</p>
+                <p className="font-barlow font-extrabold text-2xl sm:text-3xl tracking-tight text-white/80 mt-1">{ALT_PHONE_DISPLAY}</p>
                 <p className="text-white/60 text-sm font-light mt-3">24 hours · 7 days a week</p>
               </div>
               <span className="mt-2 text-xs font-barlow font-bold tracking-widest uppercase text-white/40 border border-white/15 px-4 py-1.5 rounded-full">
