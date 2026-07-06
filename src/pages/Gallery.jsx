@@ -6,6 +6,20 @@ import SEO from '../components/SEO';
 const CLOUD_NAME = 'bxua4hmb';
 const UPLOAD_PRESET = 'gallery_unsigned';
 const TAG = 'gallery';
+const LOCAL_KEY = 'gallery_local_photos';
+
+function getLocalPhotos() {
+  try { return JSON.parse(localStorage.getItem(LOCAL_KEY) || '[]'); }
+  catch { return []; }
+}
+function saveLocalPhoto(photo) {
+  const existing = getLocalPhotos();
+  const already = existing.find(p => p.public_id === photo.public_id);
+  if (!already) {
+    existing.unshift(photo);
+    localStorage.setItem(LOCAL_KEY, JSON.stringify(existing.slice(0, 200)));
+  }
+}
 
 function getUrl(publicId, opts = '') {
   return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${opts}${publicId}`;
@@ -25,8 +39,16 @@ async function uploadToCloudinary(file, onProgress) {
       if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
     };
     xhr.onload = () => {
-      if (xhr.status === 200) resolve(JSON.parse(xhr.responseText));
-      else reject(new Error('Upload failed'));
+      if (xhr.status === 200) {
+        const data = JSON.parse(xhr.responseText);
+        // Save to localStorage so it appears immediately in gallery
+        saveLocalPhoto({
+          public_id: data.public_id,
+          secure_url: data.secure_url,
+          created_at: data.created_at || new Date().toISOString(),
+        });
+        resolve(data);
+      } else reject(new Error('Upload failed'));
     };
     xhr.onerror = () => reject(new Error('Network error'));
     xhr.send(formData);
@@ -49,19 +71,37 @@ export default function Gallery() {
 
   const fetchImages = useCallback(() => {
     setLoading(true);
+    // Always load local photos first for instant display
+    const local = getLocalPhotos();
+
     fetch(`https://res.cloudinary.com/${CLOUD_NAME}/image/list/${TAG}.json`)
       .then(r => {
         if (!r.ok) return { resources: [] };
         return r.json();
       })
       .then(data => {
-        const sorted = (data.resources || []).sort(
-          (a, b) => new Date(b.created_at) - new Date(a.created_at)
-        );
-        setImages(sorted);
+        const cloudPhotos = data.resources || [];
+        // Save any cloud photos to local too
+        cloudPhotos.forEach(img => saveLocalPhoto({
+          public_id: img.public_id,
+          secure_url: `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${img.public_id}`,
+          created_at: img.created_at,
+        }));
+        // Merge: cloud takes priority, fill rest from local
+        const cloudIds = new Set(cloudPhotos.map(i => i.public_id));
+        const localOnly = getLocalPhotos().filter(i => !cloudIds.has(i.public_id));
+        const merged = [
+          ...cloudPhotos.map(img => ({ public_id: img.public_id, created_at: img.created_at })),
+          ...localOnly,
+        ].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        setImages(merged);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(() => {
+        // Cloudinary list failed - fall back to local only
+        setImages(local.sort((a, b) => new Date(b.created_at) - new Date(a.created_at)));
+        setLoading(false);
+      });
   }, []);
 
   useEffect(() => { fetchImages(); }, [fetchImages]);
