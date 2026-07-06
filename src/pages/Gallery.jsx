@@ -5,6 +5,12 @@ import SEO from '../components/SEO';
 
 const CLOUD_NAME = 'bxua4hmb';
 const TAG = 'gallery';
+const HIDDEN_KEY = 'gallery_hidden_ids';
+
+function getHiddenIds() {
+  try { return JSON.parse(localStorage.getItem(HIDDEN_KEY) || '[]'); }
+  catch { return []; }
+}
 
 function getUrl(publicId, opts = '') {
   return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${opts}${publicId}`;
@@ -30,9 +36,9 @@ export default function Gallery() {
         return r.json();
       })
       .then(data => {
-        const sorted = (data.resources || []).sort(
-          (a, b) => new Date(b.created_at) - new Date(a.created_at)
-        );
+        const sorted = (data.resources || [])
+          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+          .filter(img => !getHiddenIds().includes(img.public_id));
         setImages(sorted);
         setLoading(false);
       })
