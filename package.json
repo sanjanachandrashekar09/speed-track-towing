@@ -6,7 +6,7 @@
   "homepage": "https://sanjanachandrashekar09.github.io/speed-track-towing",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && node -e \"const fs = require('fs'); fs.copyFileSync('dist/index.html', 'dist/404.html');\"",
     "lint": "eslint .",
     "preview": "vite preview",
     "predeploy": "npm run build",
