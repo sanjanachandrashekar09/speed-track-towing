@@ -8,6 +8,7 @@ import {
 } from 'lucide-react';
 import SEO from '../components/SEO';
 import LatestVideos from '../components/LatestVideos';
+import TowTruckLogo from '../components/TowTruckLogo';
 
 const PHONE = '+917899916161';
 const PHONE_DISPLAY = '+91 78999 16161';
@@ -41,7 +42,7 @@ export default function Home() {
     : `Hello Speed Track, I need emergency towing assistance. Please call me back immediately.`;
 
   const services = [
-    { title: "Towing", icon: <Truck className="w-6 h-6" />, desc: "24 Hour and Holiday towing across the greater metropolitan area", color: "from-red-600/20 to-red-900/10" },
+    { title: "Towing", icon: <TowTruckLogo className="w-12 h-6 text-primary shrink-0" />, desc: "24 Hour and Holiday towing across the greater metropolitan area", color: "from-red-600/20 to-red-900/10" },
     { title: "Roadside Assistance", icon: <Wrench className="w-6 h-6" />, desc: "24 Hour and Holiday assistance throughout the greater metropolitan area", color: "from-orange-600/20 to-orange-900/10" },
     { title: "Accident Recovery", icon: <AlertTriangle className="w-6 h-6" />, desc: "24 Hour and Holiday Accident Recovery", color: "from-yellow-600/20 to-yellow-900/10" },
     { title: "Light On-site Mechanics", icon: <Zap className="w-6 h-6" />, desc: "24 Hour and Holiday light mechanical work at site", color: "from-blue-600/20 to-blue-900/10" },
@@ -234,7 +235,7 @@ export default function Home() {
                 desc: "All our technicians have 5+ years in the field. With speed, knowledge and great customer service, we handle every breakdown with professionalism and care."
               },
               {
-                icon: <Truck className="w-8 h-8 text-primary" />,
+                icon: <TowTruckLogo className="w-14 h-7 text-primary shrink-0" />,
                 num: "03",
                 title: "Premium Fleet & Quality",
                 desc: "With the latest trucks and equipment, we tow everything from motorcycles to heavy vehicles. Vehicle safety is our priority — we offer warranties on minor repairs."

@@ -4,6 +4,7 @@ import {
   Wrench, Lock, Truck, Zap, ChevronRight, ArrowRight
 } from 'lucide-react';
 import SEO from '../components/SEO';
+import TowTruckLogo from '../components/TowTruckLogo';
 
 const PHONE = '+917899916161';
 const ALT_PHONE_DISPLAY = '+91 98801 66968';
@@ -12,7 +13,7 @@ export default function Services() {
   const servicesList = [
     {
       title: "Towing",
-      icon: <Truck className="w-8 h-8" />,
+      icon: <TowTruckLogo className="w-10 h-5 text-white" />,
       image: "/hero_tow_truck.png",
       description: "24 Hour and Holiday towing across the greater metropolitan area",
       accentColor: "#DC2626",

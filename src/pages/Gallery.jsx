@@ -53,7 +53,17 @@ export default function Gallery() {
         }));
         
         const cloudIds = new Set(cloudPhotos.map(i => i.public_id));
-        const localOnly = getLocalPhotos().filter(i => !cloudIds.has(i.public_id));
+        
+        // Clean up stale local storage photos (older than 2 minutes and not in the cloud list)
+        const now = new Date().getTime();
+        const activeLocal = getLocalPhotos().filter(img => {
+          if (cloudIds.has(img.public_id)) return true; // keep if in cloud
+          const age = now - new Date(img.created_at).getTime();
+          return age < 120000; // keep if uploaded in last 2 minutes
+        });
+        localStorage.setItem(LOCAL_KEY, JSON.stringify(activeLocal));
+
+        const localOnly = activeLocal.filter(i => !cloudIds.has(i.public_id));
         const merged = [
           ...cloudPhotos.map(img => ({ public_id: img.public_id, created_at: img.created_at })),
           ...localOnly,
