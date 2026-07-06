@@ -91,8 +91,8 @@ export default function Home() {
               className="inline-flex items-center gap-2.5 mb-8"
             >
               <div className="flex items-center gap-2 bg-primary/15 border border-primary/40 text-primary px-4 py-2 rounded-full backdrop-blur-sm">
-                <span className="w-2 h-2 rounded-full bg-primary animate-ping absolute" />
-                <span className="w-2 h-2 rounded-full bg-primary relative" />
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-ping absolute" />
+                <span className="w-2 h-2 rounded-full bg-green-500 relative" />
                 <span className="text-xs font-barlow font-bold tracking-widest uppercase text-primary">
                   Emergency Service Available Now
                 </span>
