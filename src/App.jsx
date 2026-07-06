@@ -11,6 +11,7 @@ import Testimonials from './pages/Testimonials';
 import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
 import Gallery from './pages/Gallery';
+import UploadPage from './pages/Upload';
 import NotFound from './pages/NotFound';
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
           <Route path="/services" element={<Services />} />
           <Route path="/testimonials" element={<Testimonials />} />
           <Route path="/gallery" element={<Gallery />} />
+          <Route path="/upload" element={<UploadPage />} />
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/faq" element={<FAQ />} />
           <Route path="*" element={<NotFound />} />
