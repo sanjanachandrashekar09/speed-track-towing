@@ -1,19 +1,36 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ZoomIn, Camera, Loader2, ChevronLeft, ChevronRight } from 'lucide-react';
+import { X, ZoomIn, Camera, Loader2, ChevronLeft, ChevronRight, Upload, CheckCircle, Image, RefreshCw } from 'lucide-react';
 import SEO from '../components/SEO';
 
 const CLOUD_NAME = 'bxua4hmb';
+const UPLOAD_PRESET = 'gallery_unsigned';
 const TAG = 'gallery';
-const HIDDEN_KEY = 'gallery_hidden_ids';
-
-function getHiddenIds() {
-  try { return JSON.parse(localStorage.getItem(HIDDEN_KEY) || '[]'); }
-  catch { return []; }
-}
 
 function getUrl(publicId, opts = '') {
   return `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/${opts}${publicId}`;
+}
+
+async function uploadToCloudinary(file, onProgress) {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('upload_preset', UPLOAD_PRESET);
+  formData.append('tags', TAG);
+  formData.append('folder', 'gallery');
+
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`);
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
+    };
+    xhr.onload = () => {
+      if (xhr.status === 200) resolve(JSON.parse(xhr.responseText));
+      else reject(new Error('Upload failed'));
+    };
+    xhr.onerror = () => reject(new Error('Network error'));
+    xhr.send(formData);
+  });
 }
 
 const SkeletonCard = () => (
@@ -25,36 +42,68 @@ const SkeletonCard = () => (
 export default function Gallery() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
-  const [lightbox, setLightbox] = useState(null); // index of open image
+  const [lightbox, setLightbox] = useState(null);
+  const [dragging, setDragging] = useState(false);
+  const [uploads, setUploads] = useState([]); // {file, status, progress}
+  const fileInputRef = useRef();
 
-  useEffect(() => {
+  const fetchImages = useCallback(() => {
+    setLoading(true);
     fetch(`https://res.cloudinary.com/${CLOUD_NAME}/image/list/${TAG}.json`)
       .then(r => {
-        if (r.status === 404) return { resources: [] }; // no photos yet
         if (!r.ok) return { resources: [] };
         return r.json();
       })
       .then(data => {
-        const sorted = (data.resources || [])
-          .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-          .filter(img => !getHiddenIds().includes(img.public_id));
+        const sorted = (data.resources || []).sort(
+          (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        );
         setImages(sorted);
         setLoading(false);
       })
-      .catch(() => {
-        setImages([]);
-        setLoading(false);
-      });
+      .catch(() => setLoading(false));
   }, []);
 
+  useEffect(() => { fetchImages(); }, [fetchImages]);
+
+  // Auto-refresh after uploads complete
+  useEffect(() => {
+    if (uploads.some(u => u.status === 'done')) {
+      const timer = setTimeout(() => {
+        fetchImages();
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [uploads, fetchImages]);
+
+  const processFiles = useCallback(async (files) => {
+    const validFiles = Array.from(files).filter(f => f.type.startsWith('image/'));
+    if (!validFiles.length) return;
+
+    const newUploads = validFiles.map(file => ({ file, status: 'uploading', progress: 0 }));
+    setUploads(prev => [...newUploads, ...prev]);
+
+    for (const file of validFiles) {
+      try {
+        await uploadToCloudinary(file, (progress) => {
+          setUploads(prev => prev.map(u => u.file === file ? { ...u, progress } : u));
+        });
+        setUploads(prev => prev.map(u => u.file === file ? { ...u, status: 'done', progress: 100 } : u));
+      } catch {
+        setUploads(prev => prev.map(u => u.file === file ? { ...u, status: 'error' } : u));
+      }
+    }
+  }, []);
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setDragging(false);
+    processFiles(e.dataTransfer.files);
+  };
+
   const closeLightbox = () => setLightbox(null);
-  const prevImage = useCallback(() => {
-    setLightbox(i => (i > 0 ? i - 1 : images.length - 1));
-  }, [images.length]);
-  const nextImage = useCallback(() => {
-    setLightbox(i => (i < images.length - 1 ? i + 1 : 0));
-  }, [images.length]);
+  const prevImage = useCallback(() => setLightbox(i => (i > 0 ? i - 1 : images.length - 1)), [images.length]);
+  const nextImage = useCallback(() => setLightbox(i => (i < images.length - 1 ? i + 1 : 0)), [images.length]);
 
   useEffect(() => {
     if (lightbox === null) return;
@@ -76,14 +125,11 @@ export default function Gallery() {
 
       {/* ── Hero ── */}
       <section className="relative bg-dark text-white pt-40 pb-28 overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url('/hero_tow_truck.png')`, filter: 'brightness(0.18) saturate(0.5)' }}
-        />
+        <div className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url('/hero_tow_truck.png')`, filter: 'brightness(0.18) saturate(0.5)' }} />
         <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/60 to-transparent" />
         <div className="absolute inset-0 bg-grid opacity-20" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[200px] bg-primary/8 rounded-full blur-3xl" />
-
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
             <Camera className="w-10 h-10 text-primary mx-auto mb-4" />
@@ -97,13 +143,98 @@ export default function Gallery() {
             </p>
           </motion.div>
         </div>
-
         <div className="absolute bottom-0 left-0 right-0 h-16 bg-background" style={{ clipPath: 'polygon(0 100%, 100% 0, 100% 100%)' }} />
       </section>
 
-      {/* ── Grid ── */}
-      <section className="py-24 bg-background">
+      {/* ── Upload Section ── */}
+      <section className="py-12 bg-background">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="text-center mb-6">
+              <span className="section-eyebrow">Share Your Experience</span>
+              <h2 className="font-barlow font-extrabold text-3xl text-dark uppercase tracking-tight mt-2">
+                Upload a <span className="text-primary">Photo</span>
+              </h2>
+              <p className="text-gray-500 font-poppins text-sm mt-2">Share photos of our service to help others in the community!</p>
+            </div>
+
+            {/* Drop Zone */}
+            <div
+              onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+              onDragLeave={() => setDragging(false)}
+              onDrop={handleDrop}
+              onClick={() => fileInputRef.current.click()}
+              className={`border-2 border-dashed rounded-2xl p-10 text-center cursor-pointer transition-all duration-300 ${
+                dragging ? 'border-primary bg-primary/5 scale-[1.01]' : 'border-gray-300 hover:border-primary hover:bg-primary/3 bg-white'
+              }`}
+            >
+              <input ref={fileInputRef} type="file" accept="image/*" multiple className="hidden"
+                onChange={e => processFiles(e.target.files)} />
+              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mx-auto mb-4 transition-colors ${dragging ? 'bg-primary/15' : 'bg-gray-100'}`}>
+                {dragging ? <Upload className="w-7 h-7 text-primary" /> : <Image className="w-7 h-7 text-gray-400" />}
+              </div>
+              <p className="font-barlow font-bold text-lg text-dark uppercase tracking-wide mb-1">
+                {dragging ? 'Drop to Upload' : 'Drag & Drop or Click to Upload'}
+              </p>
+              <p className="text-gray-400 font-poppins text-xs">JPG, PNG, WEBP · Max 10 MB</p>
+            </div>
+
+            {/* Upload Progress */}
+            {uploads.length > 0 && (
+              <div className="mt-4 space-y-2">
+                {uploads.slice(0, 5).map((u, i) => (
+                  <div key={i} className="flex items-center gap-3 bg-white border border-gray-200 rounded-xl px-4 py-3">
+                    <div className="shrink-0">
+                      {u.status === 'uploading' && <Loader2 className="w-4 h-4 text-primary animate-spin" />}
+                      {u.status === 'done' && <CheckCircle className="w-4 h-4 text-[#16a34a]" />}
+                      {u.status === 'error' && <X className="w-4 h-4 text-primary" />}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-poppins text-sm text-dark truncate">{u.file.name}</p>
+                      {u.status === 'uploading' && (
+                        <div className="bg-gray-100 rounded-full h-1 mt-1 overflow-hidden">
+                          <div className="bg-primary h-full rounded-full transition-all" style={{ width: `${u.progress}%` }} />
+                        </div>
+                      )}
+                    </div>
+                    <span className="text-xs font-poppins text-gray-400 shrink-0">
+                      {u.status === 'done' && '✓ Done'}
+                      {u.status === 'error' && '✗ Failed'}
+                      {u.status === 'uploading' && `${u.progress}%`}
+                    </span>
+                  </div>
+                ))}
+                {uploads.some(u => u.status === 'done') && (
+                  <div className="p-3 bg-[#16a34a]/8 border border-[#16a34a]/20 rounded-xl text-center">
+                    <p className="text-[#16a34a] font-poppins text-sm font-semibold">
+                      ✓ Photo uploaded! Refreshing gallery...
+                    </p>
+                  </div>
+                )}
+              </div>
+            )}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ── Photo Grid ── */}
+      <section className="pb-24 bg-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between mb-8">
+            <h2 className="font-barlow font-bold text-2xl text-dark uppercase tracking-tight">
+              All Photos <span className="text-primary">({images.length})</span>
+            </h2>
+            <button onClick={fetchImages}
+              className="flex items-center gap-2 text-gray-500 hover:text-dark font-poppins text-sm transition-colors">
+              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+              Refresh
+            </button>
+          </div>
 
           {loading && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -111,46 +242,29 @@ export default function Gallery() {
             </div>
           )}
 
-          {error && (
-            <div className="text-center py-24">
-              <Camera className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="font-barlow font-bold text-2xl text-dark uppercase mb-2">Could Not Load Photos</h3>
-              <p className="text-gray-500 font-poppins text-sm">Please check your connection and try again.</p>
-            </div>
-          )}
-
-          {!loading && !error && images.length === 0 && (
-            <div className="text-center py-24">
+          {!loading && images.length === 0 && (
+            <div className="text-center py-24 bg-white rounded-3xl border border-gray-100">
               <Camera className="w-16 h-16 text-gray-300 mx-auto mb-4" />
               <h3 className="font-barlow font-bold text-2xl text-dark uppercase mb-2">No Photos Yet</h3>
-              <p className="text-gray-500 font-poppins text-sm">Check back soon — our team is adding photos of our work.</p>
+              <p className="text-gray-500 font-poppins text-sm">Be the first to upload a photo above!</p>
             </div>
           )}
 
-          {!loading && !error && images.length > 0 && (
-            <motion.div
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-              initial="hidden"
-              animate="visible"
-              variants={{ visible: { transition: { staggerChildren: 0.06 } } }}
-            >
+          {!loading && images.length > 0 && (
+            <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+              initial="hidden" animate="visible"
+              variants={{ visible: { transition: { staggerChildren: 0.06 } } }}>
               {images.map((img, idx) => (
-                <motion.div
-                  key={img.public_id}
+                <motion.div key={img.public_id}
                   variants={{ hidden: { opacity: 0, y: 24 }, visible: { opacity: 1, y: 0 } }}
                   transition={{ duration: 0.5 }}
                   className="group relative rounded-2xl overflow-hidden shadow-xl border border-gray-100 bg-dark-2 cursor-pointer"
-                  onClick={() => setLightbox(idx)}
-                >
+                  onClick={() => setLightbox(idx)}>
                   <div className="aspect-[4/3] overflow-hidden">
-                    <img
-                      src={getUrl(img.public_id, 'q_auto,f_auto,w_600/')}
-                      alt={`Gallery photo ${idx + 1}`}
-                      loading="lazy"
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
+                    <img src={getUrl(img.public_id, 'q_auto,f_auto,w_600/')}
+                      alt={`Gallery photo ${idx + 1}`} loading="lazy"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
                   </div>
-                  {/* Hover overlay */}
                   <div className="absolute inset-0 bg-dark/0 group-hover:bg-dark/50 transition-all duration-300 flex items-center justify-center">
                     <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
                       <ZoomIn className="w-6 h-6 text-white" />
@@ -166,51 +280,27 @@ export default function Gallery() {
       {/* ── Lightbox ── */}
       <AnimatePresence>
         {lightbox !== null && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
             className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center"
-            onClick={closeLightbox}
-          >
-            {/* Close button */}
-            <button
-              onClick={closeLightbox}
-              className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10"
-            >
+            onClick={closeLightbox}>
+            <button onClick={closeLightbox}
+              className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10">
               <X className="w-5 h-5" />
             </button>
-
-            {/* Prev */}
-            <button
-              onClick={(e) => { e.stopPropagation(); prevImage(); }}
-              className="absolute left-4 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10"
-            >
+            <button onClick={(e) => { e.stopPropagation(); prevImage(); }}
+              className="absolute left-4 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10">
               <ChevronLeft className="w-6 h-6" />
             </button>
-
-            {/* Image */}
-            <motion.img
-              key={lightbox}
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
+            <motion.img key={lightbox} initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }} transition={{ duration: 0.2 }}
               src={getUrl(images[lightbox]?.public_id, 'q_auto,f_auto,w_1200/')}
               alt="Gallery full view"
               className="max-w-[90vw] max-h-[85vh] object-contain rounded-xl shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            />
-
-            {/* Next */}
-            <button
-              onClick={(e) => { e.stopPropagation(); nextImage(); }}
-              className="absolute right-4 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10"
-            >
+              onClick={(e) => e.stopPropagation()} />
+            <button onClick={(e) => { e.stopPropagation(); nextImage(); }}
+              className="absolute right-4 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10">
               <ChevronRight className="w-6 h-6" />
             </button>
-
-            {/* Counter */}
             <div className="absolute bottom-5 text-white/60 font-poppins text-sm">
               {lightbox + 1} / {images.length}
             </div>

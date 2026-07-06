@@ -11,7 +11,6 @@ import Testimonials from './pages/Testimonials';
 import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
 import Gallery from './pages/Gallery';
-import Admin from './pages/Admin';
 import NotFound from './pages/NotFound';
 
 export default function App() {
@@ -28,7 +27,6 @@ export default function App() {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/contact-us" element={<Contact />} />
           <Route path="/faq" element={<FAQ />} />
-          <Route path="/admin" element={<Admin />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </main>
