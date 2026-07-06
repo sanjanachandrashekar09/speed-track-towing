@@ -24,7 +24,11 @@ export default function Gallery() {
 
   useEffect(() => {
     fetch(`https://res.cloudinary.com/${CLOUD_NAME}/image/list/${TAG}.json`)
-      .then(r => r.json())
+      .then(r => {
+        if (r.status === 404) return { resources: [] }; // no photos yet
+        if (!r.ok) return { resources: [] };
+        return r.json();
+      })
       .then(data => {
         const sorted = (data.resources || []).sort(
           (a, b) => new Date(b.created_at) - new Date(a.created_at)
@@ -33,7 +37,7 @@ export default function Gallery() {
         setLoading(false);
       })
       .catch(() => {
-        setError(true);
+        setImages([]);
         setLoading(false);
       });
   }, []);
